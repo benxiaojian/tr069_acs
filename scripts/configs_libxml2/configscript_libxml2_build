@@ -1,0 +1,26 @@
+#!/bin/sh
+#Compilation script for building libxml2-2.7.2 on GCC
+#############################################################################################
+StepCheck()
+{
+   if [ $1 -ne 0 ]; then
+      echo "#################################" >&2
+      echo "############$2:Failed############" >&2
+      echo "#################################" >&2
+      exit 1
+   else
+      echo "#################################"
+      echo "############$2:Success###########"
+      echo "#################################"
+   fi
+}
+
+make clean
+StepCheck $? "Cleaning LIBXML"
+
+make 
+StepCheck $? "Compilation LIBXML"
+
+make install
+StepCheck $? "Installation LIBXML"
+#############################################################################################

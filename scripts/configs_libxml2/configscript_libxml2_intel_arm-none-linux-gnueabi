@@ -1,0 +1,19 @@
+#!/bin/sh
+#Compilation script for building libxml2-2.7.2 on ARM
+#############################################################################################
+./configure --build=i686-pc-linux \
+            --target=arm-none-linux-gnueabi \
+            --host=arm-none-linux-gnueabi \
+            --with-endianness=little \
+            --enable-shared=no \
+            --prefix=`pwd`/../../libs/bin/libxml2-2.7.2/intel/arm-none-linux-gnueabi \
+            CC=arm-none-linux-gnueabi-gcc \
+            AR=arm-none-linux-gnueabi-ar \
+            CFLAGS="-march=armv6 -mthumb -DNO_LARGEFILE_SOURCE" \
+            CPPFLAGS="-march=armv6 -mthumb" \
+            DEPDIR=./.deps/arm-none-linux-gnueabi \
+            --without-zlib \
+            --without-python
+
+. ./configscript_libxml2_build            
+#############################################################################################

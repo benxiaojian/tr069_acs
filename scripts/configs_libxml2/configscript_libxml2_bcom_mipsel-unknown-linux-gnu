@@ -1,0 +1,19 @@
+#!/bin/sh
+#Compilation script for building libxml2-2.7.2 on mipsel
+#############################################################################################
+./configure --build=i686-pc-linux \
+            --target=mipsel-unknown-linux-gnu \
+            --host=mipsel-unknown-linux-gnu \
+            --with-endianness=little \
+            --enable-shared=no \
+            --prefix=`pwd`/../../libs/bin/libxml2-2.7.2/bcom/mipsel-unknown-linux-gnu \
+            CC=mipsel-unknown-linux-gnu-gcc \
+            AR=mipsel-unknown-linux-gnu-ar \
+            CFLAGS="-DNO_LARGEFILE_SOURCE" \
+            CPPFLAGS="-DNO_LARGEFILE_SOURCE" \
+            DEPDIR=./.deps/mipsel-unknown-linux-gnu \
+            --without-zlib \
+            --without-python
+
+. ./configscript_libxml2_build            
+#############################################################################################

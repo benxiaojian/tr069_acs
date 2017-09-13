@@ -1,0 +1,20 @@
+#!/bin/sh
+#Compilation script for building libsoap-1.1.0 on ARM
+##################################################################################################
+./configure --build=i686-pc-linux \
+            --host=arm-cortexa9-linux-gnueabi \
+            --target=arm-cortexa9-linux-gnueabi \
+            --with-endianness=little \
+            --enable-shared=no \
+            --prefix=`pwd`/../../libs/bin/csoap/oct3000/arm-cortexa9-linux-gnueabi \
+            --with-xml-prefix=`pwd`/../../libs/bin/libxml2-2.7.2/oct3000/arm-cortexa9-linux-gnueabi \
+            CC=arm-cortexa9-linux-gnueabi-gcc \
+            AR=arm-cortexa9-linux-gnueabi-ar \
+            CFLAGS="-march=armv7 -mtune=cortex-a9 -mthumb" \
+            CCFLAGS="-march=armv7 -mtune=cortex-a9 -mthumb"
+
+. ./configscript_csoap_build
+##################################################################################################
+
+
+

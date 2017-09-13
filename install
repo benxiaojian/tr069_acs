@@ -1,0 +1,53 @@
+#!/bin/sh
+
+StepCheck()
+{
+	if [ $1 -ne 0 ]; then
+		echo "###################################" >&2
+		echo "#############$2 :  Failed##########" >&2
+		echo "###################################" >&2
+		exit 1
+	else
+		echo "####################################"
+		echo "#############$2 :  Success##########"
+		echo "####################################"
+	fi
+
+}
+
+InstallLibxml()
+{
+	echo "###########################################"
+	echo "#############Install LIBXML2###############"
+	echo "###########################################"
+
+	if [ -d thirdparty/libxml2-2.7.2 ]; then
+		if [ ! -f libs/bin/libxml2-2.7.2/generic/i686-linux/lib/libxml2.a ]; then
+			cp scripts/configs_libxml2/configscript_libxml2_build thirdparty/libxml2-2.7.2/
+			cd thirdparty/libxml2-2.7.2/ && ../../scripts/configs_libxml2/configscript_libxml2_generic_i686-linux && cd -
+			StepCheck $? "Building Installing LIBXML for GCC"
+		else
+		 	echo "Skipping the LibXml for GCC installation as it is already Installed"
+		fi
+	fi
+}
+
+InsatllLibSoap()
+{
+	echo "###########################################"
+	echo "#############Install LIBXML2###############"
+	echo "###########################################"
+	
+	if [ -d thirdparty/csoap ]; then
+		if [ ! -f libs/bin/csoap/generic/i686-linux/lib/libnanohttp.a -a ! -f /lib/bin/csaop/generic/i686-linux/lib/libcsoap.a ]; then
+			cp scripts/configs_csoap/configscript_csoap_build thirdparty/csoap/
+			cd thirdparty/csoap/ && ../../scripts/configs_csoap/configscript_csoap_generic_i686-linux && cd -
+			StepCheck $? "LIBSOAP"
+		else
+			echo "Skipping the csoap and nanohttp installation as it is already installed"
+		fi
+	fi
+}
+
+InstallLibxml
+InsatllLibSoap

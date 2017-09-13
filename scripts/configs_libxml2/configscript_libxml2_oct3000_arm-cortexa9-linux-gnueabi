@@ -1,0 +1,19 @@
+#!/bin/sh
+#Compilation script for building libxml2-2.7.2 on ARM
+#############################################################################################
+./configure --build=i686-gnu-linux \
+            --host=arm-cortexa9-linux-gnueabi \
+            --target=arm-cortexa9-linux-gnueabi \
+            --with-endianness=little \
+            --enable-shared=no \
+            --prefix=`pwd`/../../libs/bin/libxml2-2.7.2/oct3000/arm-cortexa9-linux-gnueabi \
+            CC=arm-cortexa9-linux-gnueabi-gcc \
+            AR=arm-cortexa9-linux-gnueabi-ar \
+            CFLAGS="-march=armv7 -mtune=cortex-a9 -mthumb" \
+            CPPFLAGS="-march=armv7 -mtune=cortex-a9 -mthumb -DNO_LARGEFILE_SOURCE"\
+            DEPDIR=./.deps/arm-cortexa9-linux-gnueabi \
+            --without-zlib \
+            --without-python
+
+. ./configscript_libxml2_build            
+#############################################################################################

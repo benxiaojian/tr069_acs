@@ -1,0 +1,8 @@
+libnanohttp_la-nanohttp-base64.lo: nanohttp-base64.c \
+ /usr/include/stdc-predef.h ../config.h nanohttp-base64.h
+
+/usr/include/stdc-predef.h:
+
+../config.h:
+
+nanohttp-base64.h:

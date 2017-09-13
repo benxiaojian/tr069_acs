@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#Compilation script for building libsoap-1.1.0
+########################################################################################
+StepCheck()
+{
+   if [ $1 -ne 0 ]; then
+      echo "#################################" >&2
+      echo "############$2:Failed############" >&2
+      echo "#################################" >&2
+      exit 1
+   else
+      echo "#################################"
+      echo "############$2:Success###########"
+      echo "#################################"
+   fi
+}
+make clean SUBDIRS="nanohttp libcsoap"
+StepCheck $? "Cleaning LIBSOAP"
+
+make SUBDIRS="nanohttp libcsoap"
+StepCheck $? "Compilation LIBSOAP"
+
+make install SUBDIRS="nanohttp libcsoap"
+StepCheck $? "Installation LIBSOAP"
+########################################################################################

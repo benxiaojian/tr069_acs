@@ -1,0 +1,18 @@
+#!/bin/sh
+#Compilation script for building libsoap-1.1.0 on ARM
+##################################################################################################
+./configure --build=i686-pc-linux \
+            --host=arm-none-linux-gnueabi \
+            --target=arm-none-linux-gnueabi \
+            --with-endianness=little \
+            --enable-shared=no \
+            --prefix=`pwd`/../../libs/bin/csoap/qcom/arm-none-linux-gnueabi \
+            --with-xml-prefix=`pwd`/../../libs/bin/libxml2-2.7.2/qcom/arm-none-linux-gnueabi \
+            CFLAGS="-march=armv6 -mthumb"
+            CCFLAGS="-march=armv6 -mthumb"
+            CC=arm-none-linux-gnueabi-gcc \
+            AR=arm-none-linux-gnueabi-ar
+
+. ./configscript_csoap_build
+##################################################################################################
+

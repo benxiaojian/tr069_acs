@@ -1,0 +1,14 @@
+#!/bin/sh
+#Compilation script for building libsoap-1.1.0 on ARM
+##################################################################################################
+./configure --build=i686-pc-linux \
+            --host=mipsel-unknown-linux-gnu \
+            --with-endianness=little \
+            --enable-shared=no \
+            --prefix=`pwd`/../../libs/bin/csoap/bcom/mipsel-unknown-linux-gnu \
+            --with-xml-prefix=`pwd`/../../libs/bin/libxml2-2.7.2/bcom/mipsel-unknown-linux-gnu \
+            CC=mipsel-unknown-linux-gnu-gcc \
+            AR=mipsel-unknown-linux-gnu-ar
+
+. ./configscript_csoap_build
+##################################################################################################

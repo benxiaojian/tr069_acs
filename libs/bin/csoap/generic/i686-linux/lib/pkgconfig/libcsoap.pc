@@ -1,0 +1,11 @@
+prefix=/home/dengzijian/hms_simulator/thirdparty/csoap/../../libs/bin/csoap/generic/i686-linux
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: csoap
+Description: C API for SOAP applications
+Version: @csoap_version_dotted@
+Libs: -L${libdir} -lcsoap-1.1 -lnanohttp-1.1 -L/home/dengzijian/hms_simulator/thirdparty/csoap/../../libs/bin/libxml2-2.7.2/generic/i686-linux/lib -lxml2 -lm
+Cflags: -I/home/dengzijian/hms_simulator/thirdparty/csoap/../../libs/bin/libxml2-2.7.2/generic/i686-linux/include/libxml2 -I${includedir}/libcsoap-1.1 -I${includedir}/nanohttp-1.1
+

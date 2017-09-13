@@ -1,0 +1,13 @@
+#!/bin/sh
+#Compilation script for building libsoap-1.1.0 on GCC
+########################################################################################
+./configure --build=i686-pc-linux \
+            --with-endianness=little \
+            --enable-shared=no \
+            --prefix=`pwd`/../../libs/bin/csoap/generic/i686-linux \
+            --with-xml-prefix=`pwd`/../../libs/bin/libxml2-2.7.2/generic/i686-linux \
+            CC=gcc \
+            AR=ar
+
+. ./configscript_csoap_build            
+########################################################################################
