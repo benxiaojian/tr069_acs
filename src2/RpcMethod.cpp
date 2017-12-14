@@ -1,4 +1,4 @@
-#include "rpcMethod.h"
+#include "RpcMethod.h"
 
 string inform_response()
 {
@@ -43,10 +43,10 @@ string get_parameter_names(string &paramPath , string &nextLevel)
 		"<SOAP-ENV:Body>" <<
 		"<cwmp:GetParameterNames>" <<
 		"<ParameterPath>" <<
-		"InternetGatewayDevice." <<
+		paramPath <<
 		"</ParameterPath>" <<
 		"<NextLevel>" <<
-		"false" <<
+		nextLevel <<
 		"</NextLevel>" <<
 		"</cwmp:GetParameterNames>" <<
 		"</SOAP-ENV:Body>" <<
@@ -71,9 +71,9 @@ string get_parameter_values(set<string> &paramName)
 		"</SOAP-ENV:Header>" <<
 		"<SOAP-ENV:Body>" <<
 		"<cwmp:GetParameterValues>" <<
-		"<ParameterName SOAP-ENC:arrayType=\"string[" <<
+		"<ParameterNames SOAP-ENC:arrayType=\"string[" <<
 		paramName.size() << 
-		"\">";
+		"]\">";
 		set<string>::iterator it;
 		for (it = paramName.begin(); it != paramName.end(); ++it)
 		{
@@ -83,7 +83,7 @@ string get_parameter_values(set<string> &paramName)
 			"</string>";
 		}
 		response <<
-		"</ParameterName>" <<
+		"</ParameterNames>" <<
 		"</cwmp:GetParameterValues>" <<
 		"</SOAP-ENV:Body>" <<
 		"</SOAP-ENV:Envelope>";
@@ -106,10 +106,10 @@ string set_parameter_values(map<string,string> &paramList, string &paramKey)
 		"</cwmp:ID>" <<
 		"</SOAP-ENV:Header>" <<
 		"<SOAP-ENV:Body>" <<
-		"<cwmp:SetParameterValues" << 
+		"<cwmp:SetParameterValues>" << 
 		"<ParamterList SOAP-ENC:arrayType=\"cwmp:EventStruct[" <<
 		paramList.size()  <<
-		"\">";
+		"]\">";
 
 		map<string,string>::iterator it;
 		for (it = paramList.begin(); it != paramList.end(); ++it)
@@ -132,6 +132,64 @@ string set_parameter_values(map<string,string> &paramList, string &paramKey)
 		paramKey.c_str() <<
 		"</ParamterKey>" <<
 		"</cwmp:SetParameterValues>" <<
+		"</SOAP-ENV:Body>" <<
+		"</SOAP-ENV:Envelope>";
+
+	return response.str();
+}
+
+string add_object(string objectName, string parameterKey)
+{
+	std::ostringstream response;
+		response <<
+		"<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" " <<
+		"xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " <<
+		"xmlns:cwmp=\"urn:dslforum-org:cwmp-1-0\" " <<
+		"xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" " <<
+		"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" <<
+		"<SOAP-ENV:Header>" <<
+		"<cwmp:ID SOAP-ENV:mustUnderstand=\"1\">" <<
+		"123" <<
+		"</cwmp:ID>" <<
+		"</SOAP-ENV:Header>" <<
+		"<SOAP-ENV:Body>" <<
+		"<cwmp:AddObject>" <<
+		"<ObjectName>" <<
+		objectName <<
+		"</ObjectName>" << 
+		"<ParameterKey>" <<
+		parameterKey <<
+		"</ParameterKey>" <<
+		"</cwmp:AddObject>" <<
+		"</SOAP-ENV:Body>" <<
+		"</SOAP-ENV:Envelope>";
+
+	return response.str();
+}
+
+string delete_object(string objectName, string parameterKey)
+{
+	std::ostringstream response;
+		response <<
+		"<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" " <<
+		"xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " <<
+		"xmlns:cwmp=\"urn:dslforum-org:cwmp-1-0\" " <<
+		"xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" " <<
+		"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" <<
+		"<SOAP-ENV:Header>" <<
+		"<cwmp:ID SOAP-ENV:mustUnderstand=\"1\">" <<
+		"123" <<
+		"</cwmp:ID>" <<
+		"</SOAP-ENV:Header>" <<
+		"<SOAP-ENV:Body>" <<
+		"<cwmp:DeleteObject>" <<
+		"<ObjectName>" <<
+		objectName <<
+		"</ObjectName>" << 
+		"<ParameterKey>" <<
+		parameterKey <<
+		"</ParameterKey>" <<
+		"</cwmp:DeleteObject>" <<
 		"</SOAP-ENV:Body>" <<
 		"</SOAP-ENV:Envelope>";
 

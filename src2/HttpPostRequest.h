@@ -14,50 +14,52 @@
 #include <libcsoap/soap-server.h>
 #include <libcsoap/soap-env.h>
 #include <libcsoap/soap-ctx.h>
+
+#include "Tr069XmlStringUtils.h"
 using namespace std;
 
-class DeleteObjectResponse
+class ParseDeleteObjectResponse
 {
 public:
-	DeleteObjectResponse(xmlNodePtr cur);
-	~DeleteObjectResponse();
+	ParseDeleteObjectResponse(xmlNodePtr cur);
+	~ParseDeleteObjectResponse();
 
 	string status;
 };
 
-class AddObjectResponse
+class ParseAddObjectResponse
 {
 public:
-	AddObjectResponse(xmlNodePtr cur);
-	~AddObjectResponse();
+	ParseAddObjectResponse(xmlNodePtr cur);
+	~ParseAddObjectResponse();
 
 	string instanceNumber;
 	string status;
 };
 
-class GetParamterValuesResponse
+class ParseGetParamterValuesResponse
 {
 public:
-	GetParamterValuesResponse(xmlNodePtr cur);
-	~GetParamterValuesResponse();
+	ParseGetParamterValuesResponse(xmlNodePtr cur);
+	~ParseGetParamterValuesResponse();
 
 	map<string,string> parameterName;
 };
 
-class GetParameterNamesResponse
+class ParseGetParameterNamesResponse
 {
 public:
-	GetParameterNamesResponse(xmlNodePtr cur);
-	~GetParameterNamesResponse();
+	ParseGetParameterNamesResponse(xmlNodePtr cur);
+	~ParseGetParameterNamesResponse();
 
 	map<string,string> parameterList;
 };
 
-class SetParameterValuesResponse
+class ParseSetParameterValuesResponse
 {
 public:
-	SetParameterValuesResponse(xmlNodePtr cur);
-	~SetParameterValuesResponse();
+	ParseSetParameterValuesResponse(xmlNodePtr cur);
+	~ParseSetParameterValuesResponse();
 
 	string status;
 };
@@ -67,6 +69,18 @@ class Inform
 public:
 	Inform(xmlNodePtr cur);
 	~Inform();
+
+	class ParameterList
+	{
+	public:
+		ParameterList(xmlNodePtr cur);
+		~ParameterList();
+		
+		void ParseParameterValueStruct(xmlNodePtr cur);
+		string mConnectionUrl;
+	};
+
+	ParameterList *parameterList;
 };
 
 class ParseBody

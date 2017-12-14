@@ -10806,3 +10806,120 @@
 *VERBOSE*:(139990026622848) [_httpd_register_signal_handler] registering termination signal handler (SIGNAL:2)
 *DEBUG*:(139990026622848) [httpd_term] Got signal 2
 *VERBOSE*:(139990026622848) [ThreadProcedure] end httpd_run
+*VERBOSE*:(140048518051648) [_httpd_parse_arguments] socket bind to port '8083'
+*VERBOSE*:(140048518051648) [httpd_init] socket bind to port '8083'
+*VERBOSE*:(140048518051648) [httpd_register_secure] register service:t(0x23522a0):
+*VERBOSE*:(140048518051648) [httpd_run] starting run routine
+*VERBOSE*:(140048518051648) [_httpd_register_signal_handler] registering termination signal handler (SIGNAL:2)
+*VERBOSE*:(140048518051648) [hsocket_accept] accepting connection from '192.168.57.235' socket=5
+*VERBOSE*:(140048493008640) [httpd_session_main] starting new httpd session on socket -973377119
+*VERBOSE*:(140048493008640) [httpd_session_main] starting HTTP request on socket 0x5 (-1879048160)
+*VERBOSE*:(140048493008640) [hpairnode_dump_deep] -- BEGIN dump hpairnode_t --
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90000dd0)['Host','172.0.5.14','0x7f5f90000e30']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90000e30)['Date','Mon, 16 Oct 2017 15:50:15 GMT','0x7f5f90000ea0']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90000ea0)['Content-Length','2696','0x7f5f90000f00']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90000f00)['Username','','0x7f5f90000f60']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90000f60)['Password','','0x7f5f90000fc0']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90000fc0)['Authorization','Basic Og==','0x7f5f90001020']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90001020)['Cookie','Cookie','0x7f5f90001080']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90001080)['Content-Type','text/xml','(nil)']
+*VERBOSE*:(140048493008640) [hpairnode_dump_deep] -- END dump hpairnode_t --
+
+*VERBOSE*:(140048493008640) [http_input_stream_new] Stream transfer with 'Content-length'
+*VERBOSE*:(140048493008640) [httpd_request_print] ++++++ Request +++++++++
+*VERBOSE*:(140048493008640) [httpd_request_print]  Method : 'POST'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Path   : '/'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Spec   : 'HTTP/1.1'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Parsed query string :
+*VERBOSE*:(140048493008640) [httpd_request_print]  Parsed header :
+*VERBOSE*:(140048493008640) [httpd_request_print]  Host = '172.0.5.14'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Date = 'Mon, 16 Oct 2017 15:50:15 GMT'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Content-Length = '2696'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Username = ''
+*VERBOSE*:(140048493008640) [httpd_request_print]  Password = ''
+*VERBOSE*:(140048493008640) [httpd_request_print]  Authorization = 'Basic Og=='
+*VERBOSE*:(140048493008640) [httpd_request_print]  Cookie = 'Cookie'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Content-Type = 'text/xml'
+*VERBOSE*:(140048493008640) [httpd_request_print] ++++++++++++++++++++++++
+*VERBOSE*:(140048493008640) [httpd_session_main] service '' for '/' found
+*VERBOSE*:(140048493008640) [http_output_stream_new] Stream transfer with 'Connection: close'
+*VERBOSE*:(140048493008640) [http_output_stream_new] Stream transfer with 'Connection: close'
+*VERBOSE*:(140048493008640) [hpairnode_new] new pair ('Content-Type','text/xml')
+*VERBOSE*:(140048493008640) [hpairnode_new] new pair ('Content-Length','484')
+*VERBOSE*:(140048493008640) [hsocket_nsend] Starting to send on sock=0x7f5f94ad46c8
+*VERBOSE*:(140048493008640) [http_output_stream_new] Stream transfer with 'Content-length'
+*VERBOSE*:(140048493008640) [hsocket_nsend] Starting to send on sock=0x7f5f94ad4c48
+*VERBOSE*:(140048493008640) [httpd_session_main] starting HTTP request on socket 0x5 (0)
+*VERBOSE*:(140048493008640) [hpairnode_dump_deep] -- BEGIN dump hpairnode_t --
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90005270)['Host','172.0.5.14','0x7f5f90005390']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90005390)['Date','Mon, 16 Oct 2017 15:50:15 GMT','0x7f5f90005900']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90005900)['Content-Length','0','0x7f5f90005960']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90005960)['Username','','0x7f5f900059c0']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f900059c0)['Password','','0x7f5f90005a20']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90005a20)['Authorization','Basic Og==','0x7f5f90005a80']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90005a80)['Cookie','Cookie','(nil)']
+*VERBOSE*:(140048493008640) [hpairnode_dump_deep] -- END dump hpairnode_t --
+
+*VERBOSE*:(140048493008640) [http_input_stream_new] Stream transfer with 'Content-length'
+*VERBOSE*:(140048493008640) [httpd_request_print] ++++++ Request +++++++++
+*VERBOSE*:(140048493008640) [httpd_request_print]  Method : 'POST'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Path   : '/'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Spec   : 'HTTP/1.1'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Parsed query string :
+*VERBOSE*:(140048493008640) [httpd_request_print]  Parsed header :
+*VERBOSE*:(140048493008640) [httpd_request_print]  Host = '172.0.5.14'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Date = 'Mon, 16 Oct 2017 15:50:15 GMT'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Content-Length = '0'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Username = ''
+*VERBOSE*:(140048493008640) [httpd_request_print]  Password = ''
+*VERBOSE*:(140048493008640) [httpd_request_print]  Authorization = 'Basic Og=='
+*VERBOSE*:(140048493008640) [httpd_request_print]  Cookie = 'Cookie'
+*VERBOSE*:(140048493008640) [httpd_request_print] ++++++++++++++++++++++++
+*VERBOSE*:(140048493008640) [httpd_session_main] service '' for '/' found
+*VERBOSE*:(140048493008640) [http_output_stream_new] Stream transfer with 'Connection: close'
+*VERBOSE*:(140048493008640) [hsocket_nsend] Starting to send on sock=0x7f5f94ad46c8
+*VERBOSE*:(140048493008640) [http_output_stream_new] Stream transfer with 'Content-length'
+*VERBOSE*:(140048493008640) [hsocket_nsend] Starting to send on sock=0x7f5f94ad4c48
+*VERBOSE*:(140048493008640) [httpd_session_main] starting HTTP request on socket 0x5 (0)
+*VERBOSE*:(140048493008640) [hpairnode_dump_deep] -- BEGIN dump hpairnode_t --
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90005270)['Host','172.0.5.14','0x7f5f90005370']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90005370)['Date','Mon, 16 Oct 2017 15:50:15 GMT','0x7f5f900053b0']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f900053b0)['Content-Length','628','0x7f5f900039f0']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f900039f0)['Username','','0x7f5f90003780']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90003780)['Password','','0x7f5f900037e0']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f900037e0)['Authorization','Basic Og==','0x7f5f90003840']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f90003840)['Cookie','Cookie','0x7f5f900038a0']
+*VERBOSE*:(140048493008640) [hpairnode_dump] (0x7f5f900038a0)['Content-Type','text/xml','(nil)']
+*VERBOSE*:(140048493008640) [hpairnode_dump_deep] -- END dump hpairnode_t --
+
+*VERBOSE*:(140048493008640) [http_input_stream_new] Stream transfer with 'Content-length'
+*VERBOSE*:(140048493008640) [httpd_request_print] ++++++ Request +++++++++
+*VERBOSE*:(140048493008640) [httpd_request_print]  Method : 'POST'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Path   : '/'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Spec   : 'HTTP/1.1'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Parsed query string :
+*VERBOSE*:(140048493008640) [httpd_request_print]  Parsed header :
+*VERBOSE*:(140048493008640) [httpd_request_print]  Host = '172.0.5.14'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Date = 'Mon, 16 Oct 2017 15:50:15 GMT'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Content-Length = '628'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Username = ''
+*VERBOSE*:(140048493008640) [httpd_request_print]  Password = ''
+*VERBOSE*:(140048493008640) [httpd_request_print]  Authorization = 'Basic Og=='
+*VERBOSE*:(140048493008640) [httpd_request_print]  Cookie = 'Cookie'
+*VERBOSE*:(140048493008640) [httpd_request_print]  Content-Type = 'text/xml'
+*VERBOSE*:(140048493008640) [httpd_request_print] ++++++++++++++++++++++++
+*VERBOSE*:(140048493008640) [httpd_session_main] service '' for '/' found
+*VERBOSE*:(140048493008640) [http_output_stream_new] Stream transfer with 'Connection: close'
+*VERBOSE*:(140048493008640) [hsocket_nsend] Starting to send on sock=0x7f5f94ad46c8
+*VERBOSE*:(140048493008640) [http_output_stream_new] Stream transfer with 'Content-length'
+*VERBOSE*:(140048493008640) [hsocket_nsend] Starting to send on sock=0x7f5f94ad4c48
+*VERBOSE*:(140048493008640) [hsocket_close] closing socket 0x2352148 (5)...
+*VERBOSE*:(140048493008640) [hsocket_close] socket closed
+*VERBOSE*:(140048493008640) [httpd_session_main] starting HTTP request on socket 0x5 (0)
+*WARN*:(140048493008640) [hsocket_read] hssl_read failed (recv failed (Bad file descriptor))
+*ERROR*:(140048493008640) [hrequest_new_from_socket] hsocket_read failed (recv failed (Bad file descriptor))
+*ERROR*:(140048493008640) [httpd_session_main] hrequest_new_from_socket failed (recv failed (Bad file descriptor))
+*VERBOSE*:(140048493008640) [hsocket_close] closing socket 0x2352148 (5)...
+*VERBOSE*:(140048493008640) [hsocket_close] socket closed
+*DEBUG*:(140048518051648) [httpd_term] Got signal 2
+*VERBOSE*:(140048518051648) [ThreadProcedure] end httpd_run

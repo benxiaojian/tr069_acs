@@ -4,9 +4,9 @@
 //////////////////////////////////////////////
 // local include
 //////////////////////////////////////////////
-#include "rpcMethod.h"
-#include "parse.h"
-#include "event.h"
+#include "Event.h"
+#include "RpcMethod.h"
+#include "HttpPostRequest.h"
 //////////////////////////////////////////////
 // system include
 //////////////////////////////////////////////
@@ -19,7 +19,7 @@ using namespace std;
 class HnbClientFsm
 {
 public:
-	HnbClientFsm(const char *name = "HnbClientFsm", httpd_conn_t *conn);
+	HnbClientFsm(const char *name, httpd_conn_t *conn);
 	~HnbClientFsm();
 
 	void InjectInform(shared_ptr<Inform> inform);
@@ -27,6 +27,11 @@ public:
 	void InjectResponse(shared_ptr<HttpPostRequest> httpPostResponse);
 	void InjectRequestHnbConnection(string &requestString);
 	void Set_httpd_conn_t(httpd_conn_t *conn);
+	hpair_t* hpairnode_set(const char *key, const char *value, hpair_t * next);
+	
+	bool GetDeviceOnline(){return mDeviceOnline;}
+	string GetConnectionUrl() {return mUrl;}
+	bool QueryStateIsIdle(){return mState->mName == "Idle";}
 
 private:
 	typedef enum EventId_tag
@@ -48,15 +53,20 @@ private:
 	public:
 		State(HnbClientFsm &fsm, const char* name):
 			mFsm(fsm),
-			mname(name){};
-		~State(){};
+			mName(name){}
+		~State(){}
 
 		virtual void Entry()
 		{
 			log_verbose3("%s:%s(entry)", mFsm.mName.c_str(), mName.c_str());
+			printf("%s:%s(entry)", mFsm.mName.c_str(), mName.c_str());
 			mFsm.mState = this;
 		}
-
+		
+		virtual void InjectInform(shared_ptr<Inform> inform){}
+		virtual void InjectEmpty(){}
+		virtual void InjectResponse(shared_ptr<HttpPostRequest> httpPostResponse){}
+		virtual void InjectRequestHnbConnection(string &requestString){}
 		HnbClientFsm &mFsm;
 		string mName;	
 	};
@@ -66,19 +76,19 @@ private:
 	{
 	public:
 		Idle(HnbClientFsm &fsm):
-			State(fsm, "Idle"){};
-		~Idle(){};
+			State(fsm, "Idle"){}
+		~Idle(){}
 
 		void InjectInform(shared_ptr<Inform> inform);
-		void InjectRequestHnbConnection();
+		void InjectRequestHnbConnection(string &requestString);
 	};
 
 	class WaitInformInRequestHnbConneciton : public State
 	{
 	public:
 		WaitInformInRequestHnbConneciton(HnbClientFsm &fsm):
-			State(fsm, "WaitInformInRequestHnbConneciton"){};
-		~WaitInformInRequestHnbConneciton(){};
+			State(fsm, "WaitInformInRequestHnbConneciton"){}
+		~WaitInformInRequestHnbConneciton(){}
 
 		void InjectInform(shared_ptr<Inform> inform);
 	};
@@ -87,8 +97,8 @@ private:
 	{
 	public:
 		WaitEmptyAfterInformInRequestHnbConnection(HnbClientFsm &fsm):
-			State(fsm, "WaitEmptyAfterInformInRequestHnbConnection"){};
-		~WaitEmptyAfterInformInRequestHnbConnection(){};
+			State(fsm, "WaitEmptyAfterInformInRequestHnbConnection"){}
+		~WaitEmptyAfterInformInRequestHnbConnection(){}
 
 		void InjectEmpty();
 	};
@@ -97,8 +107,8 @@ private:
 	{
 	public:
 		WaitRpcResponseInRequestHnbConnection(HnbClientFsm &fsm):
-			State(fsm, "WaitRpcResponseInRequestHnbConnection"){};
-		~WaitRpcResponseInRequestHnbConnection(){};
+			State(fsm, "WaitRpcResponseInRequestHnbConnection"){}
+		~WaitRpcResponseInRequestHnbConnection(){}
 
 		void InjectResponse(shared_ptr<HttpPostRequest> httpPostResponse);
 	};
@@ -107,8 +117,8 @@ private:
 	{
 	public:
 		WaitEmptyInOtherProcess(HnbClientFsm &fsm):
-			State(fsm, "WaitEmptyInOtherProcess"){};
-		~WaitEmptyInOtherProcess(){};
+			State(fsm, "WaitEmptyInOtherProcess"){}
+		~WaitEmptyInOtherProcess(){}
 
 		void InjectEmpty();
 	};
@@ -116,9 +126,9 @@ private:
 	class WaitEmptyInDiscovery : public State
 	{
 	public:
-		WaitEmptyInDiscovry(HnbClientFsm &fsm):
-			State(fsm, "WaitEmptyInDiscovry"){};
-		~WaitEmptyInDiscovry(){};
+		WaitEmptyInDiscovery(HnbClientFsm &fsm):
+			State(fsm, "WaitEmptyInDiscovry"){}
+		~WaitEmptyInDiscovery(){}
 
 		void InjectEmpty();
 	};
@@ -127,8 +137,8 @@ private:
 	{
 	public:
 		WaitSetParameterValuesResponseInDiscovery(HnbClientFsm &fsm):
-			State(fsm, "WaitSetParameterValuesResponseInDiscovery"){};
-		~WaitSetParameterValuesResponseInDiscovery(){};
+			State(fsm, "WaitSetParameterValuesResponseInDiscovery"){}
+		~WaitSetParameterValuesResponseInDiscovery(){}
 
 		void InjectResponse(shared_ptr<HttpPostRequest> httpPostResponse);
 	};
@@ -137,8 +147,8 @@ private:
 	{
 	public:
 		WaitGetParameterNamesResponseInDiscovery(HnbClientFsm &fsm):
-			State(fsm, "WaitGetParameterNamesResponseInDiscovery"){};
-		~WaitGetParameterNamesResponseInDiscovery(){};
+			State(fsm, "WaitGetParameterNamesResponseInDiscovery"){}
+		~WaitGetParameterNamesResponseInDiscovery(){}
 
 		void InjectResponse(shared_ptr<HttpPostRequest> httpPostResponse);
 	};
@@ -147,8 +157,8 @@ private:
 	{
 	public:
 		WaitGetParameterValuesResponseInDiscovery(HnbClientFsm &fsm):
-			State(fsm, "WaitGetParameterValuesResponseInDiscovery"){};
-		~WaitGetParameterValuesResponseInDiscovery(){};
+			State(fsm, "WaitGetParameterValuesResponseInDiscovery"){}
+		~WaitGetParameterValuesResponseInDiscovery(){}
 
 		void InjectResponse(shared_ptr<HttpPostRequest> httpPostResponse);
 	};
@@ -161,10 +171,12 @@ private:
 	//Guard Conditions
 	bool QueryDeviceHasDiscovery(int SerialNumber);
 
+	string mUrl;
 	string mName;
 	State *mState;
 	string mRequestString;
 	httpd_conn_t *mConn;
+	bool mDeviceOnline;
 	Idle mIdle;
 	RequestRpcId mRequestRpcId;
 	WaitInformInRequestHnbConneciton mWaitInformInRequestHnbConneciton;

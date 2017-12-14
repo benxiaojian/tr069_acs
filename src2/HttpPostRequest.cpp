@@ -1,4 +1,4 @@
-#include "parse.h"
+#include "HttpPostRequest.h"
 
 ParseSetParameterValuesResponse::ParseSetParameterValuesResponse(xmlNodePtr cur)
 {
@@ -28,6 +28,58 @@ ParseDeleteObjectResponse::ParseDeleteObjectResponse(xmlNodePtr cur)
 Inform::Inform(xmlNodePtr cur)
 {
 	cout << __FUNCTION__ << endl;
+	cur = cur->xmlChildrenNode;
+	while (cur != NULL )
+	{
+		if (!strcmp((const char*)cur->name, "ParameterList"))
+		{
+			parameterList = new ParameterList(cur);
+		}
+		
+		cur = cur->next;
+	}
+}
+
+Inform::ParameterList::ParameterList(xmlNodePtr cur)
+{
+	cout << __FUNCTION__ << endl;
+	cur = cur->xmlChildrenNode;
+	while (cur != NULL)
+	{
+		if (!strcmp((const char*)cur->name, "ParameterValueStruct"))
+		{
+			ParseParameterValueStruct(cur);
+		}
+
+		cur = cur->next;
+	}
+}
+
+void Inform::ParameterList::ParseParameterValueStruct(xmlNodePtr cur)
+{
+	cout << __FUNCTION__ << endl;
+	cur = cur->xmlChildrenNode;
+
+	string mName,mValue;
+	while (cur != NULL)
+	{
+		if (!strcmp((const char*)cur->name, "Name"))
+		{
+			mName = XmlStringUtils::ExtractFromNode(cur);
+		}
+		else if (!strcmp((const char*)cur->name,"Value"))
+		{
+			mValue = XmlStringUtils::ExtractFromNode(cur);
+		}
+		
+		if (mName == "InternetGatewayDevice.ManagementServer.ConnectionRequestURL")
+		{
+			cout << "ConnectionRequestURL = " << mValue << endl;
+			mConnectionUrl = mValue;
+		}
+
+		cur = cur->next;
+	}
 }
 
 ParseBody::ParseBody(xmlNodePtr cur):
@@ -175,6 +227,12 @@ ParseBody::~ParseBody()
 }
 
 Inform::~Inform()
+{
+	cout << __FUNCTION__ << endl;
+	if (parameterList) delete parameterList;
+}
+
+Inform::ParameterList::~ParameterList()
 {
 	cout << __FUNCTION__ << endl;
 }

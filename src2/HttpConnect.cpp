@@ -2,15 +2,15 @@
 using namespace std;
 
 HttpConnect* HttpConnect::instance = NULL;
+HnbClientFsm *mDevice = NULL;
 
+
+static void default_service(httpd_conn_t *conn, hrequest_t *req);
 HttpConnect& HttpConnect::GetInstance()
 {
 	if (instance == NULL)
 	{
-		pthread_mutex_lock(mutex);
 		instance = new HttpConnect();
-		pthread_mutex_unlock(mutex);
-
 		return (*instance);
 	}
 
@@ -40,12 +40,16 @@ static void default_service(httpd_conn_t *conn, hrequest_t *req)
 	}
 	else if (hprequest->parse->body->inform)
 	{
-		mDevice->InjectInform(hprequest->parse->body->inform);
+		shared_ptr<Inform> inform(hprequest->parse->body->inform);
+		mDevice->InjectInform(inform);
 	}
 	else
 	{
-		mDevice->InjectResponse(hprequest);
+		shared_ptr<HttpPostRequest> hp(hprequest);
+		mDevice->InjectResponse(hp);
 	}
+
+	//delete hprequest;
 }
 
 void HttpConnect::RunHttpServer()
@@ -71,7 +75,7 @@ void HttpConnect::RunHttpServer()
 
 	char strListener[] = "listener";
 	char strArgPort [] = NHTTPD_ARG_PORT;
-	char strPort[] = "8080";
+	char strPort[] = "8083";
 	char strArgAddress[] = NHTTPD_ARG_ADDRESS;
     char strArgMaxConn[] = NHTTPD_ARG_MAXCONN;
     char strMaxConn[] = "3";
@@ -106,6 +110,8 @@ void HttpConnect::RunHttpServer()
 
 void HttpConnect::RunHttpGetClient()
 {
+	mUrl = mDevice->GetConnectionUrl();
+
 	if (mUrl == "")
 	{
 		log_error1("Http Get URL is NULL, send http get failed");
@@ -142,20 +148,25 @@ void HttpConnect::SetHttpGetUrl(const char* url)
 
 char* HttpConnect::GetHttpGetUrl()
 {
-	return mUrl.c_str();
+	return (char*)mUrl.c_str();
 }
 
 void *WaitUserInput(void*)
 {
+	cout << "WaitUserInput" << endl;
 	while (1)
 	{
-		if (session_end == true)
+		if (mDevice && mDevice->QueryStateIsIdle() && mDevice->GetDeviceOnline())
 		{
 			
 			sleep(1);
 			cout << "input rpc method number id :" << endl;
 			cout << "0: close server" << endl;
 			cout << "1: get parameter name" << endl;
+			cout << "2: get parameter value" << endl;
+			cout << "3: set parameter value" << endl;
+			cout << "4: add object" << endl;
+			cout << "5: delete object" << endl;
 
 			cout << "please input number id: ";
 			int rpc_number = -1;
@@ -163,16 +174,99 @@ void *WaitUserInput(void*)
 
 			switch(rpc_number)
 			{
-				case 0:
-					cout <<  "close server..." << endl;
-					destroy();
-					exit(0);
+				case 0:{
+						cout <<  "close server..." << endl;
+						//destroy();
+						exit(0);
+					}
 					break;
-				case 1:
+
+				case 1:{
 					cout << "send http get, get parameter names..." << endl; 
-					session_end = false;
-					input_rpc = GET_PARAMETER_NAMES;
-					httpGet();
+					//input_rpc = GET_PARAMETER_NAMES;                   
+					string getParameterNamesPath;
+					string getParameterNamesNextLevel;
+					cout << "input get parameter name path:";
+                    cin >> getParameterNamesPath;
+                    cout << "input get parameter name nextLevel:";
+					cin >> getParameterNamesNextLevel;
+					
+					string requestString = get_parameter_names(getParameterNamesPath,getParameterNamesNextLevel);
+					mDevice->InjectRequestHnbConnection(requestString);
+					HttpConnect::GetInstance().RunHttpGetClient();			
+					}
+					break;
+
+				case 2:{
+					cout << "send http get, get parameter value..." << endl;
+					set<string> paramName;
+					cout << "input parameter Names, finally input # to end input" << endl;
+					string tmp;
+					while (1)
+					{
+						cin >> tmp;
+						if (tmp == "#")
+							break;
+
+						paramName.insert(tmp);
+					}
+					string requestString = get_parameter_values(paramName);
+					mDevice->InjectRequestHnbConnection(requestString);
+					HttpConnect::GetInstance().RunHttpGetClient();
+					}
+					break;
+
+				case 3:{
+					cout << "send http get, set parameter values..." << endl;
+					//set_parameter_values(map<string,string> &paramList, string &paramKey)
+					map<string,string> paramList;
+					string paramKry("123");
+					cout << "the commandKey is defautl value(123)" << endl;
+					cout << "input get parameter names and value, use space to split, input # to stop input" << endl;
+					cout << "eg. A B" << endl << "the name is A, the value is B" << endl;
+					while (1)
+					{
+						string a,b;
+						cin >> a;
+						if (a == "#") break;
+
+						cin >> b;
+						paramList[a] = b;
+					}
+					string requestString = set_parameter_values(paramList,paramKry);
+					mDevice->InjectRequestHnbConnection(requestString);
+					HttpConnect::GetInstance().RunHttpGetClient();
+					}
+					break;
+
+				case 4:{
+					cout << "send http get, add object..." << endl;
+					string objectName;
+					string parameterKey;
+					cout << "input object name:";
+					cin >> objectName;
+					cout << "input parameter key:";
+					cin >> parameterKey;
+
+					string requestString = add_object(objectName,parameterKey);
+					mDevice->InjectRequestHnbConnection(requestString);
+					HttpConnect::GetInstance().RunHttpGetClient();
+					}
+					break;
+
+				case 5:{
+					cout << "send http get, delete object..." << endl;
+					string objectName;
+					string parameterKey;
+					cout << "input object name:";
+					cin >> objectName;
+					cout << "input parameter key:";
+					cin >> parameterKey;
+
+					string requestString = delete_object(objectName,parameterKey);
+					mDevice->InjectRequestHnbConnection(requestString);
+					HttpConnect::GetInstance().RunHttpGetClient();
+					}
 					break;
 			}
 		}// end if
@@ -183,7 +277,8 @@ int main()
 {
 	HttpConnect& httpConnect = HttpConnect::GetInstance();
 
-	pthread_t clinetWatitUserInput;
+	pthread_t clientWatitUserInput;
+	pthread_create(&clientWatitUserInput, NULL, WaitUserInput, NULL);
 
 	httpConnect.RunHttpServer();
 	

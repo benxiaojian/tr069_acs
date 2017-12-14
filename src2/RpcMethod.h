@@ -12,5 +12,8 @@ string inform_response();
 string get_parameter_names(string &paramPath, string &nextLevel);
 string get_parameter_values(set<string> &paramName);
 string set_parameter_values(map<string,string> &paramList, string &paramKey);
+string add_object(string objectName, string parameterKey);
+string delete_object(string objectName, string parameterkey);
+
 
 #endif

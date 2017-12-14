@@ -4109,3 +4109,11 @@
 *VERBOSE*:(139717535504128) [hsocket_close] socket closed
 *DEBUG*:(139717560702848) [httpd_term] Got signal 2
 *VERBOSE*:(139717560702848) [ThreadProcedure] end httpd_run
+*VERBOSE*:(139700146661184) [_httpd_parse_arguments] socket bind to port '8080'
+*VERBOSE*:(139700146661184) [httpd_init] socket bind to port '8080'
+*ERROR*:(139700146661184) [hsocket_bind] Cannot bind socket (Address already in use)
+*VERBOSE*:(139700146661184) [httpd_register_secure] register service:t(0x1a9f410):
+*VERBOSE*:(139700146661184) [httpd_run] starting run routine
+*VERBOSE*:(139700146661184) [_httpd_register_signal_handler] registering termination signal handler (SIGNAL:2)
+*ERROR*:(139700146661184) [httpd_run] hsocket_listen failed (Called hsocket_listen before initializing!)
+*VERBOSE*:(139700146661184) [ThreadProcedure] end httpd_run

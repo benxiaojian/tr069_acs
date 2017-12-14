@@ -2,6 +2,10 @@
 #define __EVENT_H__
 
 //////////////////////////////////////////////
+// local include 
+//////////////////////////////////////////////
+
+//////////////////////////////////////////////
 // system include
 //////////////////////////////////////////////
 
@@ -20,22 +24,20 @@
 #include <arpa/inet.h>
 #include <tr1/memory>
 #include <set>
+#include <map>
 using namespace std;
 
 #define TRACE(pRINTFaRGS...) \
 		TracePrintf(pRINTFaRGS);
 
 typedef enum RequestRpc_tag{
-	EMPTY,
+	NO_ACTION,
+	SEND_EMPTY,
 	GET_PARAMETER_NAMES,
 	GET_PARAMETER_VALUES,
 	SET_PARAMETER_VALUES,
 	ADD_OBJECT,
 	DELETE_OBJECT,
 }RequestRpcId;
-
-set<int> deviceSet;
-map<int, bool> mDeviceOnline;
-HnbClientFsm * = NULL;
 
 #endif

@@ -138,7 +138,7 @@ void *ThreadProcedure(void*)
 
 	char strListener[] = "listener";
 	char strArgPort [] = NHTTPD_ARG_PORT;
-	char strPort[] = "8080";
+	char strPort[] = "8083";
 	char strArgAddress[] = NHTTPD_ARG_ADDRESS;
     char strArgMaxConn[] = NHTTPD_ARG_MAXCONN;
     char strMaxConn[] = "3";
