@@ -21,31 +21,50 @@ InstallLibxml()
 	echo "#############Install LIBXML2###############"
 	echo "###########################################"
 
-	if [ -d thirdparty/libxml2-2.7.2 ]; then
-		if [ ! -f libs/bin/libxml2-2.7.2/generic/i686-linux/lib/libxml2.a ]; then
-			cp scripts/configs_libxml2/configscript_libxml2_build thirdparty/libxml2-2.7.2/
-			cd thirdparty/libxml2-2.7.2/ && ../../scripts/configs_libxml2/configscript_libxml2_generic_i686-linux && cd -
-			StepCheck $? "Building Installing LIBXML for GCC"
-		else
-		 	echo "Skipping the LibXml for GCC installation as it is already Installed"
+	if ! [ -d libraries/libxml2-2.7.2 ]; then
+		if ! [ -f libraries/libxml2-2.7.2.tar.gz ]; then
+			echo "Downloading Libxml ..."
+	 	    wget http://xmlsoft.org/sources/libxml2-2.7.2.tar.gz -P libraries/
+    	    StepCheck $? "Downloading Libxml "
 		fi
+
+		tar -zxvf libraries/libxml2-2.7.2.tar.gz -C libraries/
+	fi
+	
+
+	if [ ! -f libs/bin/libxml2-2.7.2/generic/i686-linux/lib/libxml2.a ]; then
+		cp scripts/configs_libxml2/configscript_libxml2_build libraries/libxml2-2.7.2/
+		cd libraries/libxml2-2.7.2/ && ../../scripts/configs_libxml2/configscript_libxml2_generic_i686-linux && cd -
+		StepCheck $? "Building Installing LIBXML for GCC"
+	else
+	 	echo "Skipping the LibXml for GCC installation as it is already Installed"
 	fi
 }
 
 InsatllLibSoap()
 {
 	echo "###########################################"
-	echo "#############Install LIBXML2###############"
+	echo "#############Install LIBSOAP###############"
 	echo "###########################################"
-	
-	if [ -d thirdparty/csoap ]; then
-		if [ ! -f libs/bin/csoap/generic/i686-linux/lib/libnanohttp.a -a ! -f /lib/bin/csaop/generic/i686-linux/lib/libcsoap.a ]; then
-			cp scripts/configs_csoap/configscript_csoap_build thirdparty/csoap/
-			cd thirdparty/csoap/ && ../../scripts/configs_csoap/configscript_csoap_generic_i686-linux && cd -
-			StepCheck $? "LIBSOAP"
-		else
-			echo "Skipping the csoap and nanohttp installation as it is already installed"
+
+	if ! [ -d libraries/csoap ]; then
+		if ! [ -f libraries/libsoap-1.1.0.tar.gz ]; then
+			echo "Downloading Libsoap ..."
+	  	    wget http://sourceforge.net/projects/csoap/files/libsoap/1.1.0/libsoap-1.1.0.tar.gz -P libraries/
+		    StepCheck $? "Downloading Libcsoap "
 		fi
+
+		tar zvxf libraries/libsoap-1.1.0.tar.gz -C libraries/
+		cd libraries/ && mv libsoap-1.1.0 csoap && cd -
+	fi
+
+	
+	if [ ! -f libs/bin/csoap/generic/i686-linux/lib/libnanohttp.a -a ! -f /lib/bin/csaop/generic/i686-linux/lib/libcsoap.a ]; then
+		cp scripts/configs_csoap/configscript_csoap_build libraries/csoap/
+		cd libraries/csoap/ && ../../scripts/configs_csoap/configscript_csoap_generic_i686-linux && cd -
+		StepCheck $? "LIBSOAP"
+	else
+		echo "Skipping the csoap and nanohttp installation as it is already installed"
 	fi
 }
 
