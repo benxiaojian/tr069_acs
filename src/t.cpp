@@ -48,11 +48,6 @@ typedef enum{
 }RPC;
 
 RPC input_rpc = GET_PARAMETER_NAMES;
-string getParameterNamesPath;
-string getParameterNamesNextLevel;
-
-set<string> getParameterValuesSet;
-map<string,string> setParameterValueMap;
 
 void destroy();
 void httpGet();
@@ -105,9 +100,9 @@ static void default_service(httpd_conn_t *conn, hrequest_t *req)
 	}
 	else if (hprequest->parse->body->inform)
 	{
-		session_end = true;
+		session_end = false;
 		httpPost(conn,req,INFORM);
-		inform_empty = true;
+		inform_empty = false;
 	}
 	else
 	{
@@ -307,7 +302,7 @@ void httpGet()
 	
 	cout << "input hnb connection url:";
 	cin >> url;
-	cout << "url:" << url << endl;
+
 	int argc = 2;
 	char *argv[] = {
 		(char*)url,
@@ -351,24 +346,14 @@ void httpPost(httpd_conn_t *conn, hrequest_t *req, RPC rpc)
 
 		case GET_PARAMETER_NAMES:
 		{
-			response = get_parameter_names(getParameterNamesPath,getParameterNamesNextLevel);
+			string a,b;
+			response = get_parameter_names(a,b);
 			//cout << response << endl;
 		}
 		break;
 
 		case GET_PARAMETER_VALUES:
-		{
-			response = get_parameter_values(getParameterValuesSet);
-		}
-		break;
-
 		case SET_PARAMETER_VALUES:
-		{
-			string commandKey = "123";
-			response = set_parameter_values(setParameterValueMap, commandKey);
-		}
-		break;
-
 		case ADD_OBJECT:
 		case DELETE_OBJECT:
 		break;
@@ -421,8 +406,6 @@ void *http_client(void*)
 			cout << "input rpc method number id :" << endl;
 			cout << "0: close server" << endl;
 			cout << "1: get parameter name" << endl;
-			cout << "2: get parameter value" << endl;
-			cout << "3: set parameter value" << endl;
 
 			cout << "please input number id: ";
 			int rpc_number = -1;
@@ -431,63 +414,15 @@ void *http_client(void*)
 			switch(rpc_number)
 			{
 				case 0:
-				{
 					cout <<  "close server..." << endl;
 					destroy();
 					exit(0);
 					break;
-				}
 				case 1:
-				{
 					cout << "send http get, get parameter names..." << endl; 
 					session_end = false;
 					input_rpc = GET_PARAMETER_NAMES;
-					cout << "input get parameter name path:";
-					cin >> getParameterNamesPath;
-					cout << "input get parameter name nextLevel:";
-					cin >> getParameterNamesNextLevel;
 					httpGet();
-					break;
-				}
-				case 2:
-				{
-					cout << "send http get, get parameter values..." << endl;
-					session_end = false;
-					input_rpc = GET_PARAMETER_VALUES;
-					cout << "input get parameter names, input end to stop input" << endl;
-					string path = "1";
-					getParameterValuesSet.clear();
-					while (1)
-					{
-						cin >> path;
-						if (path == "end") break;
-						getParameterValuesSet.insert(path);
-					}
-					httpGet();
-					break;
-				}
-				case 3:
-				{
-					cout << "send http get, set parameter values..." << endl;
-					session_end = false;
-					input_rpc = SET_PARAMETER_VALUES;
-					cout << "the commandKey is defautl value(123)" << endl;
-					cout << "input get parameter names and value, use space to split, input end to stop input" << endl;
-					cout << "eg. A B" << endl << "the name is A, the value is B" << endl;
-					string a,b;
-					setParameterValueMap.clear();
-					while (1)
-					{
-						cin >> a;
-						if (a == "end") break;
-						cin >> b;
-
-						setParameterValueMap[a] = b;
-					}
-					httpGet();
-					break;
-				}
-				default:
 					break;
 			}
 		}// end if

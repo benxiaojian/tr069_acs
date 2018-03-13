@@ -35,15 +35,7 @@ bool device_online = false;
 bool inform_empty = true;
 bool session_end = false;
 char url[512] = "http://192.168.57.66:7547";
-typedef enum{
-	EMPTY,
-	INFORM,
-	GET_PARAMETER_NAMES,
-	GET_PARAMETER_VALUES,
-	SET_PARAMETER_VALUES,
-	ADD_OBJECT,
-	DELETE_OBJECT,
-}RPC;
+
 
 RPC input_rpc = GET_PARAMETER_NAMES;
 
