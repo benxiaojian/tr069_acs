@@ -1,11 +1,15 @@
-#include "HttpConnect.h"
+#include <HttpConnect.h>
+
 using namespace std;
+
+#define NHTTPD_ARG_ADDRESS	"-NHTTPaddress"
 
 HttpConnect* HttpConnect::instance = NULL;
 HnbClientFsm *mDevice = NULL;
 
 
 static void default_service(httpd_conn_t *conn, hrequest_t *req);
+
 HttpConnect& HttpConnect::GetInstance()
 {
 	if (instance == NULL)
