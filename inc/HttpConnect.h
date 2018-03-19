@@ -27,7 +27,7 @@ public:
 	~HttpConnect();
 	static HttpConnect& GetInstance();
 
-	void RunHttpServer();
+	void RunHttpServer(string net_deivce, char *port);
 	void RunHttpGetClient();
 
 	void SetHttpGetUrl(const char* url);

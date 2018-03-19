@@ -56,7 +56,7 @@ static void default_service(httpd_conn_t *conn, hrequest_t *req)
 	//delete hprequest;
 }
 
-void HttpConnect::RunHttpServer()
+void HttpConnect::RunHttpServer(string net_deivce, char *port)
 {
 	char localIpAddressAsStringU32[15] = {0};
 	int socketNumber = socket(AF_INET,SOCK_STREAM,0);
@@ -64,7 +64,8 @@ void HttpConnect::RunHttpServer()
 	struct ifreq ifReq;
 	memset(&ifReq, 0, sizeof(struct ifreq));
 
-	strcpy(ifReq.ifr_name, "eth0");
+	cout << net_deivce << endl;
+	strcpy(ifReq.ifr_name, net_deivce.c_str());
 	ifReq.ifr_addr.sa_family = AF_INET;
 
 	if (ioctl(socketNumber, SIOCGIFADDR, &ifReq) == 0)
@@ -79,7 +80,7 @@ void HttpConnect::RunHttpServer()
 
 	char strListener[] = "listener";
 	char strArgPort [] = NHTTPD_ARG_PORT;
-	char strPort[] = "8083";
+	char *strPort = port;
 	char strArgAddress[] = NHTTPD_ARG_ADDRESS;
     char strArgMaxConn[] = NHTTPD_ARG_MAXCONN;
     char strMaxConn[] = "3";
@@ -277,13 +278,17 @@ void *WaitUserInput(void*)
 	}//end while
 }
 
-int main()
+int main(int agrc, char *argv[])
 {
+	string net_deivce(argv[1]);
+	char *port = strdup(argv[2]);
+
 	HttpConnect& httpConnect = HttpConnect::GetInstance();
 
 	pthread_t clientWatitUserInput;
 	pthread_create(&clientWatitUserInput, NULL, WaitUserInput, NULL);
 
-	httpConnect.RunHttpServer();
+	httpConnect.RunHttpServer(net_deivce, port);
 	
+	free(port);
 }
