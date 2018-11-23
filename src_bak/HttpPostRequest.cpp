@@ -1,8 +1,5 @@
 #include <HttpPostRequest.h>
 
-namespace acs
-{
-
 ParseSetParameterValuesResponse::ParseSetParameterValuesResponse(xmlNodePtr cur)
 {
 	cout << __FUNCTION__ << endl;
@@ -28,8 +25,7 @@ ParseDeleteObjectResponse::ParseDeleteObjectResponse(xmlNodePtr cur)
 	cout << __FUNCTION__ << endl;
 }
 
-Inform::Inform(xmlNodePtr cur) :
-        acs::QueueableEvent(kINFORM)
+Inform::Inform(xmlNodePtr cur)
 {
 	cout << __FUNCTION__ << endl;
 	cur = cur->xmlChildrenNode;
@@ -64,10 +60,10 @@ void Inform::ParameterList::ParseParameterValueStruct(xmlNodePtr cur)
 	cout << __FUNCTION__ << endl;
 	cur = cur->xmlChildrenNode;
 
-	string name,value;
-	while (cur != NULL)	{
+	string name, value;
+	while (cur != NULL) {
 		if (!strcmp((const char*)cur->name, "Name")) {
-			name = XmlStringUtils::ExtractFromNode(cur);
+		    name = XmlStringUtils::ExtractFromNode(cur);
 		} else if (!strcmp((const char*)cur->name,"Value")) {
 			value = XmlStringUtils::ExtractFromNode(cur);
 		}
@@ -258,4 +254,3 @@ ParseDeleteObjectResponse::~ParseDeleteObjectResponse()
 	cout << __FUNCTION__ << endl;
 }
 
-}

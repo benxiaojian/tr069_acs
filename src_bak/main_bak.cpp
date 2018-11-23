@@ -2,14 +2,14 @@
  * main.c
  * Author: Xiao Jian
  */
-#include <HmsServer.h>
+#include "../inc_bak/HmsServer.h"
 
 #define NHTTPD_ARG_ADDRESS  "-NHTTPaddress"
 
 
 static void default_service(httpd_conn_t *conn, hrequest_t *req)
 {
-    HttpPostRequest *hprequest = new HttpPostRequest(req);
+    HttpPostRequest *hprequest = new HttpPost(req);
     if (mDevice == NULL)
     {
         mDevice = new HnbClientFsm("hnb client", conn);

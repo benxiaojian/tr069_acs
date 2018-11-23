@@ -1,9 +1,6 @@
-/*
- * Event.h
- * Author: Xiao Jian
- */
+#ifndef __PARSE_H__
+#define __PARSE_H__
 
-#pragma once
 
 #include <iostream>
 #include <algorithm>
@@ -18,12 +15,8 @@
 #include <libcsoap/soap-env.h>
 #include <libcsoap/soap-ctx.h>
 
-#include <Tr069XmlStringUtils.h>
-#include "QueueableEvent.h"
+#include "../inc_bak/Tr069XmlStringUtils.h"
 using namespace std;
-
-namespace acs
-{
 
 class ParseDeleteObjectResponse
 {
@@ -71,7 +64,7 @@ public:
 	string status;
 };
 
-class Inform : public QueueableEvent
+class Inform
 {
 public:
 	Inform(xmlNodePtr cur);
@@ -84,7 +77,7 @@ public:
 		~ParameterList();
 		
 		void ParseParameterValueStruct(xmlNodePtr cur);
-		map<string, string> parameters;
+		string mConnectionUrl;
 	};
 
 	ParameterList *parameterList;
@@ -130,5 +123,4 @@ public:
 	Parse* parse;
 };
 
-}
-
+#endif
